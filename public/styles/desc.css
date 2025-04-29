@@ -1,0 +1,50 @@
+#desc {
+  display: inline-block;
+}
+
+.type-out {
+  overflow: hidden;
+  border-right: .15em solid transparent;
+  white-space: nowrap;
+  width: 0;
+  font-weight: 300;
+  color: #444;
+  font-size: 1.05rem;
+  animation:
+    typing-cycle 8s steps(30, end) infinite,
+    cursor 0.4s step-end infinite alternate;
+}
+
+@keyframes typing-cycle {
+  0% {
+    width: 0;
+    /* Start empty */
+  }
+
+  25% {
+    width: 44%;
+    /* Typing happens */
+  }
+
+  50% {
+    width: 44%;
+    /* Stay fully typed */
+  }
+
+  75% {
+    width: 44%;
+    /* Reverse typing (deleting) */
+  }
+
+  100% {
+    width: 0;
+    /* Stay empty */
+  }
+}
+
+
+@keyframes cursor {
+  50% {
+    border-color: black;
+  }
+}
