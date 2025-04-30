@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="styles/auth.css">
     <link rel="stylesheet" href="styles/desc.css">
     <link rel="stylesheet" href="styles/general.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <title>Quietly</title>
 </head>
 
@@ -22,19 +23,24 @@
 
         <div id="auth-panel">
             <h2>Join Quietly</h2>
-            <input type="text" type="text" placeholder="Username"> <br>
-            <input type="text" type="password" placeholder="Password"> <br>
+            <input id="username" type="text" placeholder="Username"> <br>
+            <input id="password" type="text" placeholder="Password"> <br>
             <div id="authBtn">
                 <button id="regBtn">Register</button>
                 <button id="signBtn">Sign In</button>
             </div>
             <div id="siftBtn">
-                <p onclick="signinBtn()" id="gotoSignin">Already have Account?</p>
-                <p onclick="registerBtn()" id="gotoRegister">New User?</p>
+                <span onclick="signinBtn()" id="gotoSignin">
+                    Already have Account?
+                </span>
+                <span onclick="registerBtn()" id="gotoRegister">
+                    New User?
+                </span>
             </div>
+            <p id="verdict"></p>
         </div>
     </div>
-    <script src="index.js"></script>
+    <script defer src="index.js"></script>
 </body>
 
 </html>

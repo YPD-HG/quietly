@@ -18,45 +18,63 @@ input {
 }
 
 input::placeholder {
-    padding: 13px;
     /* font-weight: bold; */
     font-size: large;
     opacity: 0.5;
+    text-decoration-color: aqua;
+}
+
+#username,
+#password {
+    padding-left: 15px;
+    font-size: large;
+    color: #506575;
 }
 
 #authBtn {
     display: grid;
-    width: 355px;
-    grid-template-columns: 355px 355px;
+    width: 367px;
+    grid-template-columns: 367px 367px;
     overflow: hidden;
 }
 
-#siftBtn {
-    display: grid;
-    width: 355px;
-    grid-template-columns: 355px 355px;
-    overflow: hidden;
-}
-
-button {
+#regBtn,
+#signBtn {
     height: 40px;
     margin-bottom: 10px;
     border: solid;
     border-width: 1px;
     border-radius: 7px;
-    /* font-weight: bold; */
+    font-weight: bold;
     font-size: large;
     opacity: 0.5;
     cursor: pointer;
     transition: transform 0.3s;
 }
 
-button:hover {
+#regBtn:active,
+#signBtn:active {
+    color: #666;
+    box-shadow: 0 2px;
+}
+
+#regBtn:hover,
+#signBtn:hover {
     background-color: #e7e7e7;
+}
+
+#siftBtn {
+    display: grid;
+    width: 365px;
+    grid-template-columns: 365px 365px;
+    overflow: hidden;
+    /* background-color: greenyellow; */
 }
 
 #gotoSignin,
 #gotoRegister {
+    /* display: inline; */
+    text-align: center;
     font-size: 12px;
     cursor: pointer;
     transition: transform 0.3s;
