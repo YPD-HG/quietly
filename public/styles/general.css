@@ -13,3 +13,7 @@ body {
     height: 80vh;
     padding-inline: 8vw;
 }
+
+#verdict {
+    padding-top: 15px;
+}

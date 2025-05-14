@@ -16,21 +16,34 @@ register.addEventListener('click', async function (e) {
             password
         })
         console.log("Token :", token.data.message);
+        console.log("Token data :", token.data);
 
-        if (token.data.message === undefined) {
+        if (token.data.message === undefined && typeof token.data == "string") {
             setTimeout(() => {
                 document.getElementById('verdict').innerText = `Successfully register, ${username}`;
-                localStorage.setItem("token", token.data)
+                localStorage.setItem("token", token.data.token)
+                localStorage.setItem("username", token.data.user.username)
                 document.getElementById('username').value = ``
                 document.getElementById('password').value = ``
             }, 10)
 
             setTimeout(() => {
                 // window.location.reload(),
-                loadDashboard();
+                window.location.href = "http://127.0.0.1:5500/dashboard.html";
             }, 1000)
         } else if (token.data.message === 'Already have account.') {
-            document.getElementById('verdict').innerText = `Already have account.`;
+            document.getElementById('verdict').innerHTML = `Username exists, try another username or Sign in`;
+            document.getElementById('username').value = ``
+            document.getElementById('password').value = ``
+        } else if (token.data.message === 'Incorrect Format') {
+            document.getElementById('verdict').innerHTML = `
+            Password should:
+    <li>Be at least 8 characters long</li>
+    <li>Contain an uppercase letter</li>
+    <li>Contain a lowercase letter</li>
+    <li>Include a number</li>
+  `;
+
             document.getElementById('username').value = ``
             document.getElementById('password').value = ``
         }
@@ -58,7 +71,7 @@ signin.addEventListener('click', async function (e) {
 
             setTimeout(() => {
                 // window.location.reload();
-                loadDashboard();
+                window.location.href = "http://127.0.0.1:5500/dashboard.html";
             }, 1000)
         } else if (token.data.message == 'You are a new User, Signup.') {
             document.getElementById('verdict').innerText = `You are a new User, Register yourself.`;
