@@ -4,12 +4,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="styles/dash.css">
+    <link rel="stylesheet" href="styles/navbar.css">
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>Dashboard</title>
 </head>
 
 <body>
-    <h1>Welcome</h1>
-    <script src="dashboard.js"></script>
+    <nav>
+        <div id="navbar">
+            <div id="nav-left">
+                <h1>Quietly</h1>
+            </div>
+            <div id="nav-right">
+                <!-- <div>
+                    Account
+                </div> -->
+                <div>
+                    <span id="signOut">Sign Out</span>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+    <header>
+        <h3 id="username"></h3>
+    </header>
+
+    <body>
+        <div id="todo">
+            <div>
+                Your Todo List
+            </div>
+            <div>
+                Add Task <input type="text" id="taskInput">
+                <button id="inputButton">Add</button>
+            </div>
+            <!-- <div id="taskHeader">
+                Listed Tasks: <button onclick="clearAll()">Clear All</button>
+            </div> -->
+            <div id="taskList">
+            </div>
+        </div>
+    </body>
+    <script type="module" src="dashboard.js"></script>
+    <script type="module" src="todo.js"></script>
 </body>
 
 </html>

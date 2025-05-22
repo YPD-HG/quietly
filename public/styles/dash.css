@@ -1,0 +1,12 @@
+body {
+    font-family: "Inter", serif;
+    background-color: #E3EBF2;
+    color: #1f2937;
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+i {
+    max-height: 20px;
+    max-width: 20px;
+}

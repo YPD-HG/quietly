@@ -1,0 +1,27 @@
+#navbar {
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    align-items: center;
+}
+
+#nav-left {
+    font-size: 1.25rem;
+    font-weight: 1000;
+    letter-spacing: 0.5px;
+    color: #1A1A1A;
+}
+
+#nav-right {
+    display: grid;
+    grid-template-columns: 100px;
+    justify-content: space-between;
+    cursor: pointer;
+    column-gap: 50px;
+}
+
+#nav-right div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

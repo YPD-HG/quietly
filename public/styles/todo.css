@@ -1,0 +1,11 @@
+#todo{
+    margin: auto;
+    width: 50%;
+    text-align: center
+}
+
+#taskList{
+    /* display: grid;
+    grid-template-columns: 1fr 50px;
+    color: green; */
+}

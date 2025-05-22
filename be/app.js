@@ -7,7 +7,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const { z } = require('zod')
 const bcrypt = require('bcrypt')
-const { AuthModel } = require('./db')
+const { AuthModel, TodoModel } = require('./db')
 
 app.use(express.json())
 app.use(cors())
@@ -44,9 +44,9 @@ function auth(req, res, next) {
 app.post('/signup', async (req, res) => {
     const requiredCred = z.object({
         username: z.string(),
-        password: z.string().regex(new RegExp('(?=.*?[a-z])(?=.*?[0-9]).{8,}$'), {
+        password: z.string().regex(new RegExp('(?=.*?[a-z]).{8,}$'), {
             message:
-                'Password must be at least 8 characters and contain an uppercase letter, lowercase letter, and number'
+                'Password must be at least 8 characters long'
         })
     })
     const parsedDataWithSuccess = requiredCred.safeParse(req.body)
@@ -84,7 +84,10 @@ app.post('/signup', async (req, res) => {
 
     if (!errorFound) {
         let token = jwt.sign({ id: user._id.toString() }, process.env.ACCESS_TOKEN_SECRET)
-        res.status(200).send(token)
+        res.status(200).send({
+            token,
+            username
+        })
     }
 
 })
@@ -130,6 +133,41 @@ app.post('/signin', async (req, res) => {
     // }
 })
 
+app.post('/todo', async (req, res) => {
+    console.log("Todo endpoint triggered.")
+    console.log("Request : ", req.body)
+    console.log("Request userId : ", req.body.userId)
+    let userId = req.body.userId;
+    console.log("UserId :", userId);
+
+    try{let todo = await TodoModel.create({
+        title: req.body.inputText,
+        userId,
+        done: false
+    })}catch(error){
+        console.log("error :", error);
+    }
+    let todos = await TodoModel.find({
+        userId
+    })
+    console.log("All the Todos Corresponding to this specific userId", todos)
+    res.json({
+        todos,
+        message: "Todo Created Succesfully"
+    })
+})
+app.get('/todos', async(req, res)=>{
+    console.log("Request : ", req);
+    const userId = req.headers.userid
+    console.log("UserId : ", userId);
+    let todos = await TodoModel.find({
+        userId
+    })
+    console.log("Todos List :", todos);
+    res.json({
+        todos
+    })
+})
 app.get('/users', (req, res) => {
     res.json({
         users
@@ -140,10 +178,12 @@ app.get("/dashboard", auth, function (req, res) {
     res.sendFile(__dirname + "/public/dashboard.html");
 })
 
-app.get('/me', auth, (req, res) => {
+app.get('/me', auth, async (req, res) => {
     const user = req.user;
+    let foundUser = await AuthModel.findById(user.id);
     res.status(201).send({
-        user
+        username: foundUser.username,
+        id: user.id
     })
 })
 

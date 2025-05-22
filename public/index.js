@@ -16,20 +16,20 @@ register.addEventListener('click', async function (e) {
             password
         })
         console.log("Token :", token.data.message);
-        console.log("Token data :", token.data);
+        console.log("Token data :", token.data.token);
 
-        if (token.data.message === undefined && typeof token.data == "string") {
+        if (token.data.message === undefined && typeof token.data.token == "string") {
             setTimeout(() => {
                 document.getElementById('verdict').innerText = `Successfully register, ${username}`;
                 localStorage.setItem("token", token.data.token)
-                localStorage.setItem("username", token.data.user.username)
+                localStorage.setItem("username", token.data.username)
                 document.getElementById('username').value = ``
                 document.getElementById('password').value = ``
             }, 10)
 
             setTimeout(() => {
                 // window.location.reload(),
-                window.location.href = "http://127.0.0.1:5500/dashboard.html";
+                window.location.href = "/dashboard.html";
             }, 1000)
         } else if (token.data.message === 'Already have account.') {
             document.getElementById('verdict').innerHTML = `Username exists, try another username or Sign in`;
@@ -37,12 +37,7 @@ register.addEventListener('click', async function (e) {
             document.getElementById('password').value = ``
         } else if (token.data.message === 'Incorrect Format') {
             document.getElementById('verdict').innerHTML = `
-            Password should:
-    <li>Be at least 8 characters long</li>
-    <li>Contain an uppercase letter</li>
-    <li>Contain a lowercase letter</li>
-    <li>Include a number</li>
-  `;
+            Password should be 8 character long`;
 
             document.getElementById('username').value = ``
             document.getElementById('password').value = ``
@@ -71,7 +66,7 @@ signin.addEventListener('click', async function (e) {
 
             setTimeout(() => {
                 // window.location.reload();
-                window.location.href = "http://127.0.0.1:5500/dashboard.html";
+                window.location.href = "/dashboard.html";
             }, 1000)
         } else if (token.data.message == 'You are a new User, Signup.') {
             document.getElementById('verdict').innerText = `You are a new User, Register yourself.`;
@@ -85,26 +80,22 @@ signin.addEventListener('click', async function (e) {
     }
 })
 
-function loadDashboard() {
-    window.location.href = "http://127.0.0.1:5500/dashboard.html";
-}
-
-window.addEventListener("storage", async (event) => {
-    let token = localStorage.getItem('token')
-    console.log("Token :", token);
-    if (token !== null && window.location.href == `http://127.0.0.1:5500/`) {
-        console.log("Token is not null")
-        await axios.get('http://localhost:3000/me', {
-            headers: {
-                token: token
-            }
-        })
-        location.replace(`http://127.0.0.1:5500/dashboard.html`);
-        // loadDashboard()
-        // console.log("i m on Dashboard");
-    }
-});
-
+// window.addEventListener("storage", async (event) => {
+//     console.log("Local storage triggered.");
+//     let token = localStorage.getItem('token')
+//     console.log("Token :", token);
+//     if (token !== null && window.location.href == `/`) {
+//         console.log("Token is not null")
+//         await axios.get('http://localhost:3000/me', {
+//             headers: {
+//                 token: token
+//             }
+//         })
+//         location.replace(`/dashboard.html`);
+//         // loadDashboard()
+//         // console.log("i m on Dashboard");
+//     }
+// });
 
 function signinBtn() {
     document.querySelector('#regBtn').style.transform = `translateX(-100%)`
