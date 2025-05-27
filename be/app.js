@@ -17,15 +17,11 @@ mongoose.connect('mongodb+srv://yashdeep:yashdeep2000@cluster0.vlrglmq.mongodb.n
 let port = 3000;
 let users = []
 
-function auth(req, res, next) {
-    console.log("req :", req);
-
-    console.log("req.headers['token'] :", req.headers['token'])
+async function auth(req, res, next) {
     const token = req.headers['token']
-    console.log("Token :", token)
     let foundUser;
     if (token) {
-        foundUser = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+        foundUser = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
         if (foundUser) {
             req.user = foundUser
             next()
@@ -71,7 +67,6 @@ app.post('/signup', async (req, res) => {
     }
     try {
         let hashPassword = await bcrypt.hash(password, 5)
-        console.log("Hash Password :", hashPassword)
 
         user = await AuthModel.create({
             username: username,
@@ -79,7 +74,6 @@ app.post('/signup', async (req, res) => {
         })
     } catch (e) {
         errorFound = true;
-        console.log("Error :", e)
     }
 
     if (!errorFound) {
@@ -99,13 +93,9 @@ app.post('/signin', async (req, res) => {
     let foundUser = await AuthModel.findOne({
         username
     })
-    console.log("Found User :", foundUser)
 
     if (foundUser) {
-        console.log("Found User Password signin :", foundUser.password);
-        console.log("Password :", password);
         const passwordMatch = await bcrypt.compare(password, foundUser.password);
-        console.log("Password Match:", passwordMatch);
         if (passwordMatch) {
             let token = jwt.sign({ id: foundUser._id.toString() }, process.env.ACCESS_TOKEN_SECRET)
             res.status(200).send(token)
@@ -120,50 +110,33 @@ app.post('/signin', async (req, res) => {
             message: 'You are a new User, Signup.'
         })
     }
-    // let foundUser = users.find(user => user.username == username)
-    // if (foundUser) {
-    //     if (foundUser.password === password) {
-    //         let token = jwt.sign(username, process.env.ACCESS_TOKEN_SECRET)
-    //         res.status(200).send(token)
-    //     } else {
-    //         res.send({
-    //             message: 'Wrong password.'
-    //         })
-    //     }
-    // }
 })
 
 app.post('/todo', async (req, res) => {
-    console.log("Todo endpoint triggered.")
-    console.log("Request : ", req.body)
-    console.log("Request userId : ", req.body.userId)
     let userId = req.body.userId;
-    console.log("UserId :", userId);
 
-    try{let todo = await TodoModel.create({
-        title: req.body.inputText,
-        userId,
-        done: false
-    })}catch(error){
+    try {
+        let todo = await TodoModel.create({
+            title: req.body.inputText,
+            userId,
+            done: false
+        })
+    } catch (error) {
         console.log("error :", error);
     }
     let todos = await TodoModel.find({
         userId
     })
-    console.log("All the Todos Corresponding to this specific userId", todos)
     res.json({
         todos,
         message: "Todo Created Succesfully"
     })
 })
-app.get('/todos', async(req, res)=>{
-    console.log("Request : ", req);
+app.get('/todos', async (req, res) => {
     const userId = req.headers.userid
-    console.log("UserId : ", userId);
     let todos = await TodoModel.find({
         userId
     })
-    console.log("Todos List :", todos);
     res.json({
         todos
     })
