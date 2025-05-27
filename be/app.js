@@ -1,4 +1,5 @@
 require('dotenv').config()
+require('dotenv').config()
 
 const express = require('express')
 const app = express()
@@ -132,6 +133,41 @@ app.post('/todo', async (req, res) => {
         message: "Todo Created Succesfully"
     })
 })
+
+app.post('/delete-todo', async (req, res) => {
+    console.log("req.body : ", req.body);
+    let title = req.body.title;
+    console.log("title : ", title);
+    if (title.trim()) {
+        console.log("Title : ", title);
+        let todoFound = await TodoModel.findOne({
+            title: title
+        })
+        console.log("Todo Found : ", todoFound);
+        if (todoFound != null) {
+            let id = todoFound._id;
+            let deleted = await TodoModel.deleteOne({ _id: id })
+
+            if (deleted.deletedCount) {
+                res.json({
+                    message: "Todo deleted!",
+                    verdict: deleted.deletedCount
+                })
+            } else {
+                res.json({
+                    message: "Couldn't delete todo for some reason",
+                    verdict: deleted.deletedCount
+                })
+            }
+        } else {
+            res.json({
+                message: "Todo doesn't exists!"
+            })
+        }
+
+    }
+})
+
 app.get('/todos', async (req, res) => {
     const userId = req.headers.userid
     let todos = await TodoModel.find({
@@ -141,6 +177,7 @@ app.get('/todos', async (req, res) => {
         todos
     })
 })
+
 app.get('/users', (req, res) => {
     res.json({
         users

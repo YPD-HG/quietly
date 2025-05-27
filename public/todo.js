@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('taskList').innerHTML = ``;
 
     for (let i = 0; i < list.length; i++) {
-        const todo = list[i].title;
+        const title = list[i].title;
 
         let element = document.createElement('div');
 
@@ -31,11 +31,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         updateBtn.innerText = 'Update';
         deleteBtn.innerText = 'Delete';
-        text.innerText = ` ${todo}`;
+        text.innerText = ` ${title}`;
 
         // When Delete button is triggered
         deleteBtn.addEventListener('click', async (e) => {
             element.remove();
+
+            let todoDelete = await axios.post('http://localhost:3000/delete-todo', {
+                title
+            })
+
+            let verdict = todoDelete.data.verdict;
+
+            if (verdict) {
+                console.log("Todo deleted");
+            } else {
+                console.log("Some issue in deleting todo");
+            }
+
         })
 
         element.appendChild(checkbox);
@@ -64,7 +77,7 @@ inputButton.addEventListener("click", async (e) => {
         document.getElementById("taskInput").value = ``;
         document.getElementById('taskList').innerHTML = ``;
         for (let i = 0; i < list.length; i++) {
-            const todo = list[i].title;
+            const title = list[i].title;
 
             let element = document.createElement('div');
 
@@ -79,7 +92,7 @@ inputButton.addEventListener("click", async (e) => {
 
             updateBtn.innerText = 'Update';
             deleteBtn.innerText = 'Delete';
-            text.innerText = ` ${todo}`;
+            text.innerText = ` ${title}`;
 
             element.appendChild(checkbox);
 
@@ -91,12 +104,20 @@ inputButton.addEventListener("click", async (e) => {
 
             // When Delete button is triggered
             deleteBtn.addEventListener('click', async (e) => {
-
-                let todoDeleted = await axios.post('http://localhost://')
-
                 element.remove();
-            })
 
+                let todoDelete = await axios.post('http://localhost:3000/delete-todo', {
+                    title
+                })
+
+                let verdict = todoDelete.data.verdict;
+
+                if (verdict) {
+                    console.log("Todo deleted");
+                } else {
+                    console.log("Some issue in deleting todo");
+                }
+            })
             document.getElementById('taskList').appendChild(element);
         }
     }
