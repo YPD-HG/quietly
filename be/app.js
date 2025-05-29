@@ -13,7 +13,8 @@ const { AuthModel, TodoModel } = require('./db')
 app.use(express.json())
 app.use(cors())
 
-mongoose.connect('mongodb+srv://yashdeep:yashdeep2000@cluster0.vlrglmq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+try{mongoose.connect('mongodb+srv://yashdeep:yashdeep2000@cluster0.vlrglmq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')}catch(e){console.log(e)};
+
 
 let port = 3000;
 let users = []
