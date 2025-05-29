@@ -13,7 +13,7 @@ const { AuthModel, TodoModel } = require('./db')
 app.use(express.json())
 app.use(cors())
 
-mongoose.connect('mongodb+srv://yashdeep:yashdeep2000@cluster0.vlrglmq.mongodb.net/quietly')
+mongoose.connect('mongodb+srv://yashdeep:yashdeep2000@cluster0.vlrglmq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 
 let port = 3000;
 let users = []
@@ -101,7 +101,6 @@ app.post('/signin', async (req, res) => {
             let token = jwt.sign({ id: foundUser._id.toString() }, process.env.ACCESS_TOKEN_SECRET)
             res.status(200).send(token)
         } else {
-            console.log(" In Wrong Password")
             res.send({
                 message: "Wrong password."
             })
@@ -135,15 +134,11 @@ app.post('/todo', async (req, res) => {
 })
 
 app.post('/delete-todo', async (req, res) => {
-    console.log("req.body : ", req.body);
     let title = req.body.title;
-    console.log("title : ", title);
     if (title.trim()) {
-        console.log("Title : ", title);
         let todoFound = await TodoModel.findOne({
             title: title
         })
-        console.log("Todo Found : ", todoFound);
         if (todoFound != null) {
             let id = todoFound._id;
             let deleted = await TodoModel.deleteOne({ _id: id })
@@ -168,6 +163,31 @@ app.post('/delete-todo', async (req, res) => {
     }
 })
 
+app.post('/update-todo', async (req, res) => {
+    let title = req.body.title;
+    let updateTitle = req.body.updatedText;
+    let updateTodo = await TodoModel.updateOne({ title: title }, { title: updateTitle })
+    let titleFound = updateTodo.matchedCount;
+    let titleModified = updateTodo.modifiedCount;
+    if (titleFound && titleModified) {
+        res.json({
+            verdict:1,
+            message: "Todo successfully modified!"
+        })
+    } else if (titleFound) {
+        res.json({
+            verdict: 0,
+            message: "Todo with this title found, but couldn't update for some reason"
+        })
+    }
+    else {
+        res.json({
+            verdict: 0,
+            message: "Todo with this title doesn't exist"
+        })
+    }
+})
+
 app.get('/todos', async (req, res) => {
     const userId = req.headers.userid
     let todos = await TodoModel.find({
@@ -178,11 +198,11 @@ app.get('/todos', async (req, res) => {
     })
 })
 
-app.get('/users', (req, res) => {
-    res.json({
-        users
-    })
-})
+// app.get('/users', (req, res) => {
+//     res.json({
+//         users
+//     })
+// })
 
 app.get("/dashboard", auth, function (req, res) {
     res.sendFile(__dirname + "/public/dashboard.html");
@@ -202,5 +222,4 @@ var tasks = [[], []]
 
 app.listen(port, () => {
     console.log(`listening at port ${port}`);
-
 })
