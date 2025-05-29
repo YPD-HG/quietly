@@ -6,7 +6,7 @@ let userId;
 
 document.addEventListener('DOMContentLoaded', async () => {
     userId = await getUserId();
-    let list = await axios.get('http://localhost:3000/todos', {
+    let list = await axios.get('https://quietly-ewxa.onrender.com/todos', {
         headers: {
             userId
         }
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         deleteBtn.addEventListener('click', async (e) => {
             element.remove();
 
-            let todoDelete = await axios.post('http://localhost:3000/delete-todo', {
+            let todoDelete = await axios.post('https://quietly-ewxa.onrender.com/delete-todo', {
                 title
             })
 
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.log("Updated Text : ", updatedText);
             if (updatedText.trim())
                 if (updatedText !== title) {
-                    let updatedDb = await axios.post('http://localhost:3000/update-todo', {
+                    let updatedDb = await axios.post('https://quietly-ewxa.onrender.com/update-todo', {
                         title,
                         updatedText
                     })
@@ -90,7 +90,7 @@ inputButton.addEventListener("click", async (e) => {
     let inputText = document.getElementById("taskInput").value;
 
     if (inputText.trim()) {
-        let resp = await axios.post('http://localhost:3000/todo', {
+        let resp = await axios.post('https://quietly-ewxa.onrender.com/todo', {
             inputText,
             userId
         })
@@ -127,7 +127,7 @@ inputButton.addEventListener("click", async (e) => {
             deleteBtn.addEventListener('click', async (e) => {
                 element.remove();
 
-                let todoDelete = await axios.post('http://localhost:3000/delete-todo', {
+                let todoDelete = await axios.post('https://quietly-ewxa.onrender.com/delete-todo', {
                     title
                 })
 
@@ -146,7 +146,7 @@ inputButton.addEventListener("click", async (e) => {
                 console.log("Updated Text : ", updatedText);
                 if (updatedText.trim())
                     if (updatedText !== title) {
-                        let updatedDb = await axios.post('http://localhost:3000/update-todo', {
+                        let updatedDb = await axios.post('https://quietly-ewxa.onrender.com/update-todo', {
                             title,
                             updatedText
                         })
