@@ -168,6 +168,32 @@ app.post('/delete-todo', async (req, res) => {
     }
 })
 
+app.post('/update-todo', async (req, res) => {
+    console.log("req.body", req.body);
+    let title = req.body.title;
+    let updateTitle = req.body.updatedText;
+    let updateTodo = await TodoModel.updateOne({ title: title }, { title: updateTitle })
+    let titleFound = updateTodo.matchedCount;
+    let titleModified = updateTodo.modifiedCount;
+    if (titleFound && titleModified) {
+        res.json({
+            verdict:1,
+            message: "Todo successfully modified!"
+        })
+    } else if (titleFound) {
+        res.json({
+            verdict: 0,
+            message: "Todo with this title found, but couldn't update for some reason"
+        })
+    }
+    else {
+        res.json({
+            verdict: 0,
+            message: "Todo with this title doesn't exist"
+        })
+    }
+})
+
 app.get('/todos', async (req, res) => {
     const userId = req.headers.userid
     let todos = await TodoModel.find({
@@ -178,11 +204,11 @@ app.get('/todos', async (req, res) => {
     })
 })
 
-app.get('/users', (req, res) => {
-    res.json({
-        users
-    })
-})
+// app.get('/users', (req, res) => {
+//     res.json({
+//         users
+//     })
+// })
 
 app.get("/dashboard", auth, function (req, res) {
     res.sendFile(__dirname + "/public/dashboard.html");

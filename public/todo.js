@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('taskList').innerHTML = ``;
 
     for (let i = 0; i < list.length; i++) {
-        const title = list[i].title;
+        let title = list[i].title;
 
         let element = document.createElement('div');
 
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         deleteBtn.innerText = 'Delete';
         text.innerText = ` ${title}`;
 
-        // When Delete button is triggered
+        // When Delete button is triggered.
         deleteBtn.addEventListener('click', async (e) => {
             element.remove();
 
@@ -49,6 +49,27 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.log("Some issue in deleting todo");
             }
 
+        })
+
+        // When Update Button is triggered.
+        updateBtn.addEventListener('click', async (e) => {
+            let updatedText = document.getElementById("taskInput").value;
+            console.log("Updated Text : ", updatedText);
+            if (updatedText.trim())
+                if (updatedText !== title) {
+                    let updatedDb = await axios.post('http://localhost:3000/update-todo', {
+                        title,
+                        updatedText
+                    })
+                    text.innerText = ` ${updatedText}`;
+                    title = updatedText;
+                    document.getElementById("taskInput").value = ``
+
+                    console.log(updatedDb.data.message);
+
+
+                }
+            document.getElementById("taskInput").value = ``
         })
 
         element.appendChild(checkbox);
@@ -118,6 +139,27 @@ inputButton.addEventListener("click", async (e) => {
                     console.log("Some issue in deleting todo");
                 }
             })
+
+            // When Update Button is triggered.
+            updateBtn.addEventListener('click', async (e) => {
+                let updatedText = document.getElementById("taskInput").value;
+                console.log("Updated Text : ", updatedText);
+                if (updatedText.trim())
+                    if (updatedText !== title) {
+                        let updatedDb = await axios.post('http://localhost:3000/update-todo', {
+                            title,
+                            updatedText
+                        })
+                        text.innerText = `${updatedText}`;
+                        title = updatedText;
+
+
+
+                        console.log(updatedDb.data.message);
+                    }
+                document.getElementById("taskInput").value = ``
+            })
+
             document.getElementById('taskList').appendChild(element);
         }
     }
