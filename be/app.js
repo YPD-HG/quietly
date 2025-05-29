@@ -101,7 +101,6 @@ app.post('/signin', async (req, res) => {
             let token = jwt.sign({ id: foundUser._id.toString() }, process.env.ACCESS_TOKEN_SECRET)
             res.status(200).send(token)
         } else {
-            console.log(" In Wrong Password")
             res.send({
                 message: "Wrong password."
             })
@@ -135,15 +134,11 @@ app.post('/todo', async (req, res) => {
 })
 
 app.post('/delete-todo', async (req, res) => {
-    console.log("req.body : ", req.body);
     let title = req.body.title;
-    console.log("title : ", title);
     if (title.trim()) {
-        console.log("Title : ", title);
         let todoFound = await TodoModel.findOne({
             title: title
         })
-        console.log("Todo Found : ", todoFound);
         if (todoFound != null) {
             let id = todoFound._id;
             let deleted = await TodoModel.deleteOne({ _id: id })
@@ -169,7 +164,6 @@ app.post('/delete-todo', async (req, res) => {
 })
 
 app.post('/update-todo', async (req, res) => {
-    console.log("req.body", req.body);
     let title = req.body.title;
     let updateTitle = req.body.updatedText;
     let updateTodo = await TodoModel.updateOne({ title: title }, { title: updateTitle })
@@ -228,5 +222,4 @@ var tasks = [[], []]
 
 app.listen(port, () => {
     console.log(`listening at port ${port}`);
-
 })
